@@ -1,0 +1,296 @@
+<!doctype html><html lang="ja"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>電気分解ラボ</title><style>
+*{box-sizing:border-box}body{margin:0;background:#f3f5f7;color:#203044;font-family:system-ui,sans-serif}header{background:#142d43;color:white;padding:24px 5%;display:flex;justify-content:space-between;align-items:center}header small{color:#a9c5d8}main{max-width:1200px;margin:auto;padding:32px 24px}h1{font-size:28px;margin:0}h2{font-size:20px}.intro{color:#637486;line-height:1.8}.tabs{display:flex;gap:12px;margin:24px 0}button{font:inherit;cursor:pointer;border:1px solid #d5dde5;border-radius:10px;background:white;padding:13px 20px;color:#263f54}.tabs button[aria-selected=true]{background:#167e89;color:white;border-color:#167e89}.grid{display:grid;grid-template-columns:1.6fr 1fr;gap:24px}.panel{background:white;border:1px solid #e0e6ea;border-radius:18px;padding:24px}.tag{color:#167e89;font-size:12px;font-weight:700;letter-spacing:2px}.controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:16px}#play{background:#167e89;color:white}.controls label{font-size:13px;color:#667789}svg{width:100%;height:auto}.reaction{border-radius:12px;padding:16px;background:#f2f7fa;margin:12px 0;line-height:1.8}.reaction b{display:block}.equation{font-size:20px;font-family:Georgia,serif}.note{font-size:13px;line-height:1.8;color:#647385}.legend{display:flex;gap:20px;font-size:13px}.dot{display:inline-block;width:10px;height:10px;border-radius:50%;background:#efad59;margin-right:5px}.blue{background:#64a8da}.comparison{margin-top:24px}table{width:100%;border-collapse:collapse;font-size:14px}td,th{text-align:left;padding:14px;border-bottom:1px solid #e5ebef}details{margin-top:18px;line-height:1.9}summary{cursor:pointer;font-weight:600}#status{font-size:13px;color:#167e89}.step{margin-top:12px;color:#425970;line-height:1.9}input{accent-color:#167e89}footer{padding:24px 0;color:#6b7987;font-size:12px}@media(max-width:800px){.grid{grid-template-columns:1fr}.tabs{flex-direction:column}header small{display:none}main{padding:22px 14px}.panel{padding:16px}table{font-size:12px}td,th{padding:10px 5px}}
+</style><header><h1>⚡ 電気分解ラボ</h1><small>CHEMISTRY / INTERACTIVE LAB</small></header><main><span class="tag">見えないイオンを、見てみよう。</span><p class="intro">水溶液を選んで電源を入れると、イオンの移動と電極の変化が始まります。<br>2本の電極を入れた容器で、電気によって起こる化学変化を観察しましょう。</p><div class="tabs" role="tablist" aria-label="水溶液"><button role="tab" data-type="cu" aria-selected="true">塩化銅水溶液</button><button role="tab" data-type="hcl" aria-selected="false">塩酸</button><button role="tab" data-type="na" aria-selected="false">水酸化ナトリウム水溶液</button></div><div class="grid"><section class="panel"><span class="tag">01 / 観察する</span><h2 id="solution"></h2><svg viewBox="0 0 650 460" role="img" aria-label="直流電源につながった陰極と陽極、イオンと発生物の模式図"><defs><clipPath id="liquidclip"><rect x="93" y="225" width="464" height="194" rx="10"/></clipPath></defs><path d="M190 330V80H270 M380 80H460V330" fill="none" stroke="#697f92" stroke-width="5"/><rect x="266" y="38" width="118" height="81" rx="12" fill="#203b51"/><text x="325" y="60" text-anchor="middle" fill="white" font-size="14">直流電源</text><text x="325" y="77" text-anchor="middle" fill="#c7e1ed" font-size="10">電子を供給・引き出す</text><text x="288" y="97" fill="#80cee2" font-size="25">−</text><text x="351" y="97" fill="#ffb97a" font-size="25">＋</text><path d="M83 195V413Q83 435 105 435H545Q568 435 568 413V195" fill="#f9fcff" stroke="#acbecb" stroke-width="4"/><rect id="liquid" x="93" y="225" width="464" height="194" rx="10" fill="#cdeafa"/><g id="waterLines" style="display:none"><line x1="93" y1="225" x2="557" y2="225" stroke="#738a98" stroke-width="2" stroke-dasharray="6 5"/><line id="waterLevelLine" x1="93" y1="225" x2="557" y2="225" stroke="#1683ad" stroke-width="3"/></g><g id="particles" clip-path="url(#liquidclip)"></g><rect x="177" y="164" width="26" height="209" rx="5" fill="#45596b"/><rect x="447" y="164" width="26" height="209" rx="5" fill="#45596b"/><rect id="copper" x="175" y="245" width="30" height="126" rx="5" fill="#bd774c" opacity="0"/><g id="electrons"></g><g id="bubbles"></g><g id="surface"></g><text x="190" y="148" text-anchor="middle" fill="#27718b" font-weight="bold" stroke="white" stroke-width="4" stroke-linejoin="round" paint-order="stroke fill">陰極</text><text x="460" y="148" text-anchor="middle" fill="#c2793e" font-weight="bold" stroke="white" stroke-width="4" stroke-linejoin="round" paint-order="stroke fill">陽極</text><text id="leftProduct" x="190" y="398" text-anchor="middle" font-size="14" fill="#203044"></text><text id="rightProduct" x="460" y="398" text-anchor="middle" font-size="14" fill="#203044"></text><text x="325" y="455" text-anchor="middle" font-size="12" fill="#718396">炭素などの反応しにくい電極を使うモデル</text></svg><div class="legend"><span><i class="dot"></i>陽イオン → 陰極</span><span><i class="dot blue"></i>陰イオン → 陽極</span></div><div class="controls"><button id="play">▶ 電源を入れる</button><button id="step">1ステップ</button><button id="reset">↺ リセット</button><label>速さ <input id="speed" aria-label="アニメーションの速さ" type="range" min="0.5" max="2" value="1" step="0.5"></label><label><input id="showions" type="checkbox" checked>粒子表示</label></div><p id="phase" class="step" aria-live="polite"></p><p class="note">最初から表示されている粒子が、電極へ移動し、その場で反応します。電源を入れると、電極と導線に初めからある電子が動きます。電子の供給・引き出しによる電極表面の変化を色で示し、それにつながってイオンが動き始めます。実際には重なって進む過程を、学習用に順番に表示しています。NaOHの表示では、陰極にできたOH⁻と、陽極にできた水をその場に残して、両方の反応の生成物を示しています。陽極では、初めからあるOH⁻が反応します。陰極で生じたOH⁻が溶液中のOH⁻を補い、水は溶媒として陰極のそばにもあるため、通電中は反応が続きます。水が陰極へ電気的に引き寄せられるわけではありません。水素・酸素として外へ出た分、水の量は減ります。図のOH⁻の移動・補給は全体の収支を理解するための表現です。OH⁻から酸素原子と水ができる中間表示は、原子数の対応を示す模式図です。実際に自由な酸素原子が溶液中に生じる反応機構を示すものではありません。実際には電極付近のイオンの再配置・移動・反応は重なって進みます。イオンは電場による移動だけでなく、拡散などでも電極へ運ばれます。電極の色と表面の電荷表示は、この電源接続によって生じた状態を示します。電極名に固定した＋・−を付けたものではありません。</p><div id="waterAmount" hidden><p id="waterText" class="note"></p><progress id="waterBar" max="100" value="100" style="width:100%;accent-color:#167e89" aria-label="水の残量"></progress><p class="note">残量と液面の低下は、水の消費を示す模式表示です。実際の時間・水量には対応しません。破線は最初の液面、青い実線は現在の液面です。</p></div><p id="status" aria-live="polite">電源OFF</p></section><aside class="panel"><span class="tag">02 / しくみを読む</span><h2>電極で何が起こる？</h2><div class="reaction"><b>初めからある電子 → 反応で受け渡す電子</b><p class="note">電源OFFでも、電極と導線には動ける電子があります。電源ONで、その電子の分布が変わり、陰極表面には電子が少し余分にたまり、陽極表面では電子が少し不足した状態になります。続いて陽極でCl⁻が電子を渡すと、その電子も電極内の流れに加わります。陰極では、電極の電子をCu²⁺などが受け取ります。</p><p class="note">電子と正電荷の丸は同じ大きさです。反応中、導線からイオンへ向かう電子はCu²⁺1個あたり2個、H⁺1個あたり1個です。表面に残る6個の電子は帯電状態、導体内の初期電子の表示は、反応で受け渡す電子が動き始める間に消えます。反応に向かう電子とは区別しています。表示したイオンは使い切りで、新しいイオンが途中で追加されることはありません。陰極表面の電子は、充電によるわずかな過剰を強調しています。陽極表面の「＋」は、電子が引き出されて不足した結果の正電荷です。正電荷の粒子が電源から流れ込むわけではありません。反応で電子を受け渡しても、電源が電子の供給・引き出しを続けます。金属の自由電子に相当する、炭素電極の動ける電子も模式的に示しています。</p></div><div class="reaction"><b>陰極｜電子を受け取る</b><span id="leftEq" class="equation"></span><div id="leftDesc"></div></div><div class="reaction"><b>陽極｜電子を渡す</b><span id="rightEq" class="equation"></span><div id="rightDesc"></div></div><h2>全体の変化</h2><p id="total" class="equation"></p><p id="explain" class="step"></p><details open><summary>電源から先に電子が出るのはなぜ？</summary><p class="note">電源と導線にも初めから電子があります。電源は陰極側へ電子を供給すると同時に、陽極側から電子を引き出します。陽極から来た特定の電子が電源に到着するまで待つわけではありません。図は電源内部を同じ電子が通り抜ける様子を示していません。</p></details><details><summary>ボルタ電池との違い</summary><p class="note">電池は化学変化で電気を生み出します。電気分解は、外部の電源から電気を送り、化学変化を起こします。この図では電源の−端子につながる電極が陰極、＋端子につながる電極が陽極です。</p></details><p class="note">電子は導線を流れ、水溶液中ではイオンの移動が電流を担います。図の粒子数・移動速度・気泡は模式的な表現です。</p></aside></div><section class="panel comparison"><span class="tag">03 / 比べる</span><h2>水溶液が変わると、生成物も変わる</h2><table><thead><tr><th>水溶液</th><th>陰極</th><th>陽極</th><th>観察のポイント</th></tr></thead><tbody><tr><td>塩化銅水溶液</td><td>銅 Cu</td><td>塩素 Cl₂</td><td>銅が付着し、溶液の色が薄くなる</td></tr><tr><td>塩酸</td><td>水素 H₂</td><td>塩素 Cl₂</td><td>両方の電極から気体が発生</td></tr><tr><td>水酸化ナトリウム水溶液</td><td>水素 H₂</td><td>酸素 O₂</td><td>気体の体積比は水素：酸素＝2：1</td></tr></tbody></table><p class="note">塩化銅水溶液と塩酸は、陽極で塩素が発生する授業用の条件を想定しています。濃度や電極材料などで反応は変わります。水酸化ナトリウムは電流を流れやすくし、全体として水が分解されます。</p></section><footer>学習用シミュレーション · 実際の実験は先生の指導のもとで行います。塩素のにおいを直接かがないでください。</footer></main><script>
+const data={cu:{name:'塩化銅水溶液 / CuCl₂',cation:'Cu²⁺',anion:'Cl⁻',left:'銅が付着',right:'塩素 Cl₂',le:'Cu²⁺ + 2e⁻ → Cu',re:'2Cl⁻ → Cl₂ + 2e⁻',ld:'銅イオンが電子を2個受け取り、銅になります。',rd:'塩化物イオンが電子を失い、塩素になります。',total:'CuCl₂ → Cu + Cl₂',ex:'陽イオンのCu²⁺は陰極へ、陰イオンのCl⁻は陽極へ移動します。Cu²⁺が減るにつれ、青色が薄くなります。'},hcl:{name:'塩酸 / HCl',cation:'H⁺',anion:'Cl⁻',left:'水素 H₂',right:'塩素 Cl₂',le:'2H⁺ + 2e⁻ → H₂',re:'2Cl⁻ → Cl₂ + 2e⁻',ld:'水素イオンが電子を受け取り、水素になります。',rd:'塩化物イオンが電子を失い、塩素になります。',total:'2HCl → H₂ + Cl₂',ex:'水素イオンは陰極へ、塩化物イオンは陽極へ移動します。同じ条件で集めると水素と塩素の発生量は理論上1：1ですが、塩素は水に溶けるため、集まる体積は異なることがあります。'},na:{name:'水酸化ナトリウム水溶液 / NaOH',cation:'Na⁺',anion:'OH⁻',left:'水素 H₂',right:'酸素 O₂',le:'2H₂O + 2e⁻ → H₂ + 2OH⁻',re:'4OH⁻ → O₂ + 2H₂O + 4e⁻',ld:'水は水溶液全体にあり、陰極のそばにも初めからあります。その水が電子を受け取って水素になります。水がイオンのように引き寄せられるわけではありません。Na⁺は金属ナトリウムになりません。',rd:'水酸化物イオンが電子を失い、酸素が発生します。',total:'2H₂O → 2H₂ + O₂',ex:'Na⁺は陰極へ移動しますが反応せず、水が反応します。陰極ではOH⁻が生じ、陽極ではOH⁻が消費されるため、全体では水が分解されます。水素：酸素の体積比は2：1です。'}};
+const $=id=>document.getElementById(id);let type='cu',running=false,t=0,last=0,progress=0;const ns='http://www.w3.org/2000/svg';function el(tag,attrs,parent){let e=document.createElementNS(ns,tag);for(let k in attrs)e.setAttribute(k,attrs[k]);parent.append(e);return e}let ions=[];function setup(){let d=data[type];$('solution').textContent=d.name;for(let [id,key] of [['leftEq','le'],['rightEq','re'],['leftDesc','ld'],['rightDesc','rd'],['total','total'],['explain','ex'],['leftProduct','left'],['rightProduct','right']])$(id).textContent=d[key];$('particles').replaceChildren();ions=[];for(let i=0;i<18;i++){let positive=i%2===0,g=el('g',{},$('particles'));el('circle',{r:20,fill:positive?'#fbd6a0':'#b9def4',stroke:positive?'#dc9c42':'#75afd5'},g);let text=el('text',{'text-anchor':'middle',y:5,'font-size':13,fill:'#29475c'},g);text.textContent=positive?d.cation:d.anion;ions.push({g,positive,x:240+(i%6)*33,y:252+Math.floor(i/6)*57,seed:i});}draw()}
+let activeSurface=null, describeBatch=true, batchOffset=0, batchIndex=0;
+function batchCount(){return type==='na'?2:6}
+const solutionLayouts={};
+function initialParticle(left,index){
+if(!solutionLayouts[type]){
+let seed={cu:713,hcl:1297,na:2671}[type],points=[],layout={};
+function random(){seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;}
+for(let batch=0;batch<batchCount();batch++)for(const side of [true,false]){
+const count=side?(type==='cu'?1:2):(type==='na'?4:2);
+for(let i=0;i<count;i++){
+let point;
+for(let attempt=0;attempt<10000;attempt++){
+point={x:236+random()*191,y:242+random()*157};
+if(points.every(p=>Math.hypot(p.x-point.x,p.y-point.y)>=29))break;
+}
+points.push(point);layout[batch+':'+side+':'+i]=point;
+}}
+solutionLayouts[type]=layout;
+}
+return solutionLayouts[type][batchIndex+':'+left+':'+index];
+}
+function positionBatch(batch){batchIndex=batch;batchOffset=type==='na'?0:(batch%3-1)*64+22;}
+function draw(){
+$('waterAmount').hidden=type!=='na';$('waterLines').style.display=type==='na'?'':'none';if(type!=='na'){$('liquid').setAttribute('y',225);$('liquid').setAttribute('height',194);}
+$('particles').style.display='none';$('surface').style.display=$('showions').checked?'':'none';$('bubbles').replaceChildren();$('electrons').replaceChildren();$('surface').replaceChildren();
+$('phase').replaceChildren();
+if(type==='na'){drawAlkaline();return;}
+drawCharge(t);drawConductorElectrons(t);drawSurfaceCharge(t);
+if(t<1){
+const original=t;
+t=0;describeBatch=false;
+for(let batch=0;batch<batchCount();batch++){
+positionBatch(batch);activeSurface=el('g',{},$('surface'));
+drawSide(true);drawSide(false);
+}
+t=original;activeSurface=null;describeBatch=true;batchOffset=0;
+$('phase').replaceChildren();
+
+const line=document.createElement('div');line.textContent=running||t>0?'電極・導線に初めからある電子が動いています。陽極から電子が引き出され、陰極へ供給されます。電極表面の変化に続いて、このイオンがゆっくり動き始めます。':'電源OFF：電極・導線の中にも、初めから動ける電子があります。';$('phase').append(line);
+$('copper').setAttribute('opacity',0);return;
+}
+const elapsed=t;t-=1;
+const realTime=t;
+for(let batch=0;batch<batchCount();batch++){
+const waiting=realTime<batch*4;
+t=Math.max(0,realTime-batch*4);
+if(t>=14)continue;
+positionBatch(batch);activeSurface=el('g',{},$('surface'));
+describeBatch=batch===0;
+if(t<12){drawSide(true);drawSide(false);}else{drawSpentProducts(t);}
+if(!waiting&&t<12)drawWireElectrons();
+}
+t=realTime;activeSurface=null;describeBatch=true;batchOffset=0;
+$('copper').setAttribute('opacity',type==='cu'&&realTime>=8?Math.min(.35+realTime*.008,1):0);
+if(realTime>=(batchCount()-1)*4+14){running=false;$('play').textContent='▶ 電源を入れる';$('status').textContent='表示した粒子の反応が終了しました。リセットすると初めの状態に戻ります。';}
+else if(running)$('status').textContent='電源ON · 最初からある粒子が順に反応中';
+t=elapsed;
+}
+function drawSpentProducts(age){
+const g=activeSurface||$('surface'),u=Math.min((age-12)/2,1);
+for(const left of [true,false]){
+if(left&&type==='cu')continue;
+const px=(left?215:435)+(left?35:-35),py=235-u*70+batchOffset;
+const symbol=left?'H':type==='na'?'O':'Cl';
+let group=el('g',{opacity:1-u},g);
+
+for(const dy of [-12,12]){el('circle',{cx:px,cy:py+dy,r:12,fill:'#e3ecc9',stroke:'#7f9aac'},group);let text=el('text',{x:px,y:py+dy+5,'text-anchor':'middle','font-size':13,fill:'#203044'},group);text.textContent=symbol;}
+}
+}
+function drawAlkaline(){
+const clock=Math.max(0,t-1),real=clock%26,g=$('surface');drawCharge(t);drawSurfaceCharge(t);drawConductorElectrons(t);
+$('liquid').setAttribute('fill','#edf8fb');$('copper').setAttribute('opacity',0);
+const waterUsed=Math.min(clock/26*2,100),levelDrop=waterUsed*.45;
+$('liquid').setAttribute('y',225+levelDrop);$('liquid').setAttribute('height',194-levelDrop);$('waterLevelLine').setAttribute('y1',225+levelDrop);$('waterLevelLine').setAttribute('y2',225+levelDrop);
+$('waterAmount').hidden=false;$('waterBar').value=100-waterUsed;
+$('waterText').textContent='水の残量（模式表示）：'+Math.round(100-waterUsed)+'％';
+
+function particle(label,x,y,color,r=12){if(label==='Na⁺'||label==='OH⁻'||label==='H₂O')y=Math.max(y,225+levelDrop+r+4);el('circle',{cx:x,cy:y,r,fill:color||'#d6eaf3',stroke:'#7f9aac'},g);let z=el('text',{x,y:y+4,'text-anchor':'middle','font-size':11,fill:'#203044'},g);z.textContent=label;}
+function electron(x,y){el('circle',{cx:x,cy:y,r:5,fill:'#79d2e4',stroke:'#153c50','stroke-width':.6},g);let z=el('text',{x,y:y+2.5,'text-anchor':'middle','font-size':7,fill:'#153c50'},g);z.textContent='e⁻';}
+function smooth(u){u=Math.max(0,Math.min(u,1));return u*u*(3-2*u)}
+function molecule(symbol,x,y){particle(symbol,x,y-12,'#e3ecc9');particle(symbol,x,y+12,'#e3ecc9');let z=el('text',{x:x+18,y:y+4,'font-size':13,fill:'#203044'},g);z.textContent=symbol+'₂';}
+function caption(text,x,y){let z=el('text',{x,y,'text-anchor':'middle','font-size':12,'font-weight':'bold',fill:'#203044'},g);z.textContent=text;}
+const sodium=[[285,244],[340,270],[295,375],[365,389]];
+const sodiumMove=smooth(clock/7);
+for(let i=0;i<sodium.length;i++){const p=sodium[i],targetY=[236,306,382,408][i];particle('Na⁺',p[0]+(215-p[0])*sodiumMove,p[1]+(targetY-p[1])*sodiumMove,'#fbd6a0');}
+// Cathode: four water molecules receive four electrons, making 2 H2 and 4 OH-.
+const born=6.5;
+for(let batch=0;batch<2;batch++){
+const center=267+batch*86;
+if(real<born){particle('H₂O',215,center-16);particle('H₂O',215,center+16);}
+else{
+const spread=smooth((real-born)/1.5);
+molecule('H',215+25*spread,center-Math.max(0,real-born-2)*7);
+for(let i=0;i<2;i++){
+const initialX=215+(i?91:61)*spread,initialY=center+(i?18:-18);
+const target=[[342,246],[402,282],[335,328],[402,365]][batch*2+i];
+const replenish=smooth((real-13)/13);
+particle('OH⁻',initialX+(target[0]-initialX)*replenish,initialY+(target[1]-initialY)*replenish,'#b9def4');
+}
+if(real>=24){const opacity=smooth((real-24)/2),before=g.children.length;particle('H₂O',215,center-16);particle('H₂O',215,center+16);for(let k=before;k<g.children.length;k++)g.children[k].setAttribute('opacity',opacity);}
+
+}
+}
+if(real<born){for(let i=0;i<4;i++){
+const d=real*65-i*40;if(d<0)continue;
+const target=251+Math.floor(i/2)*86+(i%2)*32;
+if(real<5.5){if(d<80)electron(270-d,80);else electron(190,Math.min(d,target));}
+else{const u=smooth(real-5.5);electron(190+25*u,target);}
+}}
+caption(real<born?'水が電子を受け取る':'水素 ＋ OH⁻ ができた',290,420);
+// Anode: the OH- initially in the solution reacts here; do not wait for cathode products.
+let delivered=0;
+for(let i=0;i<4;i++){
+const y=250+i*34,emit=4+i*.3;
+if(real<emit){const start=[[342,246],[402,282],[335,328],[402,365]][i],u=smooth(real/4);particle('OH⁻',start[0]+(435-start[0])*u,start[1]+(y-start[1])*u,'#b9def4');}
+else{
+delivered++;
+if(real<4.9){particle('O·H',435,y,'#b9def4');}
+const d=(real-emit)*65,total=25+(y-80)+80;
+if(d<total){if(d<25)electron(435+d,y);else if(d<25+y-80)electron(460,y-(d-25));else electron(460-(d-25-(y-80)),80);}
+}
+}
+if(delivered===4&&real>=4.9){
+function atom(symbol,x,y,opacity=1){const before=g.children.length;particle(symbol,x,y,symbol==='O'?'#e3ecc9':'#fff4cf',symbol==='O'?9:7);for(let k=before;k<g.children.length;k++)g.children[k].setAttribute('opacity',opacity);}
+const waterFade=1-smooth((real-16)/4);
+const separate=smooth((real-4.9)/2),regroup=smooth((real-9)/4),pair=regroup;
+for(let i=0;i<4;i++){
+const originalY=250+i*34;
+let ox=435,oy=originalY,hx=435-27*separate,hy=originalY;
+const waterO=i===0||i===3;
+if(real>=9){
+const waterTop=Math.max(250,225+levelDrop+16*Math.sin(52.25*Math.PI/180)+7+4);
+const targetY=i===0?waterTop:i===3?352:i===1?279:323;
+ox=435+((waterO?395:411)-435)*regroup;
+oy=originalY+(targetY-originalY)*regroup;
+const waterY=i<2?waterTop:352;
+// H-O-H angle 104.5 degrees; the two O-H distances are equal.
+const hydrogenY=waterY+(i%2===0?-1:1)*16*Math.sin(52.25*Math.PI/180);
+const hydrogenX=395+16*Math.cos(52.25*Math.PI/180);
+hx=408+(hydrogenX-408)*regroup;
+hy=originalY+(hydrogenY-originalY)*regroup;
+}
+if(!waterO&&real>=9){oy+=(i===1?13:-13)*pair;if(real>=14)oy-=Math.min((real-14)*7,65);}
+const waterShift=Math.max(0,225+levelDrop+7+4-Math.min(hy,oy-2));
+if(waterO)oy+=waterShift;hy+=waterShift;
+atom('O',ox,oy,waterO?waterFade:1);atom('H',hx,hy,waterFade);
+}
+if(real<9)caption('Oが4個・Hが4個：同じ原子を追う',348,420);
+else if(real<13)caption('水2分子と酸素1分子へ組み替わる',347,420);
+else{if(real<20){const before=g.children.length;caption('H₂O',367,Math.max(253,225+levelDrop+29));caption('H₂O',367,355);for(let k=before;k<g.children.length;k++)g.children[k].setAttribute('opacity',waterFade);}if(real>=13)caption('O₂',382,305-Math.min(Math.max(0,real-14)*7,65));}
+}
+if(real<4.9)caption('OH⁻が電子を渡す',452,420);
+const lines=[real<born?'① 陰極：そばの水が電子を受け取ります。':'① 陰極：水から水素とOH⁻ができました。OH⁻は水溶液中に残ります。',delivered<4?'② 陽極：初めからあるOH⁻が電子を渡します。':real<9?'② 陽極：電子を渡したOH⁻4個の中の、O4個とH4個を示しています。':real<13?'② 陽極：O1個とH2個が集まる組を2つ作り、水2分子になります。':'② 陽極：水2分子と酸素1分子が同時に完成しました。水は折れ曲がった形（H–O–H：約104.5°）です。',real>=13?'③ Na⁺は陰極へ移動しても反応しません。OH⁻は陰極で補われ、陽極で使われるので、全体では水の分解が続きます。':'両方の電極表面で、それぞれの変化を観察しましょう。'];
+for(const text of lines){let line=document.createElement('div');line.textContent=text;$('phase').append(line)}
+$('status').textContent=t===0?'電源OFF':'電源ON · 水の分解が続いています（'+(Math.floor(clock/26)+1)+'回目）';
+if(waterUsed>=100){running=false;$('status').textContent='模式表示の水を使い切りました。リセットで戻せます。';$('play').textContent='▶ 電源を入れる';}
+}
+function drawConductorElectrons(time){
+
+// Electron symbols represent the conducting electrons already present throughout the circuit.
+const g=$('electrons'),length=360;
+const u=Math.min(time/4,1),shift=260*(u+u*u-u*u*u);
+const settling=Math.max(0,Math.min((time-2)/2,1));
+const fade=Math.max(0,Math.min((time-.7)/.8,1));
+const opacity=1-fade*fade*(3-2*fade);
+if(opacity<=0)return;
+for(const left of [true,false])for(let i=0;i<9;i++){
+const d=(i*40+shift)%length;
+let x,y;
+if(left){if(d<80){x=270-d;y=80}else{x=190;y=Math.min(80+d-80,330)}}
+else{if(d<280){x=460;y=360-d}else{x=460-(d-280);y=80}}
+el('circle',{cx:x,cy:y,r:5,fill:'#79d2e4',stroke:'#153c50','stroke-width':.6,opacity},g);
+let label=el('text',{x,y:y+2.5,'text-anchor':'middle','font-size':7,fill:'#153c50',opacity},g);label.textContent='e⁻';
+}
+}
+function drawSurfaceCharge(time){
+if(time<=0)return;
+const amount=Math.min(time/2,1),g=$('surface');
+// Show a small excess of conducting electrons near the cathode surface.
+// This is a symbolic surface-charge reservoir, not an electron count to scale.
+for(let i=0;i<6;i++){
+const y=235+i*23;
+let opacity=Math.max(0,Math.min(amount*6-i,1));
+
+const x=198;
+el('circle',{cx:x,cy:y,r:5,fill:'#79d2e4',stroke:'#153c50',opacity},g);
+let label=el('text',{x,y:y+2.5,'text-anchor':'middle','font-size':7,fill:'#153c50',opacity},g);label.textContent='e⁻';
+}
+let label=el('text',{x:145,y:184,'text-anchor':'middle','font-size':12,fill:'#27718b',opacity:amount},g);label.setAttribute('stroke','white');label.setAttribute('stroke-width','4');label.setAttribute('stroke-linejoin','round');label.setAttribute('paint-order','stroke fill');label.textContent='電子が少し余分にある→ーに帯電';
+// Positive surface charge is the net effect of electron depletion; it does not flow in as a particle.
+for(let i=0;i<6;i++){
+const opacity=Math.max(0,Math.min(amount*6-i,1)),x=454,y=235+i*23;
+el('circle',{cx:x,cy:y,r:5,fill:'#fff0d7',stroke:'#873600','stroke-width':.6,opacity},g);
+let charge=el('text',{x,y:y+2.5,'text-anchor':'middle','font-size':9,'font-weight':'bold',fill:'#873600',opacity},g);charge.textContent='+';
+}
+let positive=el('text',{x:505,y:184,'text-anchor':'middle','font-size':13,'font-weight':'bold',fill:'#873600',opacity:amount},g);positive.setAttribute('stroke','white');positive.setAttribute('stroke-width','4');positive.setAttribute('stroke-linejoin','round');positive.setAttribute('paint-order','stroke fill');positive.textContent='電子が不足→＋に帯電';
+
+}
+function drawCharge(time){
+if(time<=0)return;
+for(const left of [true,false])el('rect',{x:left?175:445,y:164,width:30,height:209,rx:5,fill:left?'#55b6d0':'#e4a25d',opacity:Math.min(time/1.5,1)*.35},$('surface'));
+const opacity=Math.min(time/1.5,1);
+for(const left of [true,false]){
+let label=el('text',{x:left?150:500,y:205,'text-anchor':'middle','font-size':12,fill:left?'#27718b':'#a96626',opacity},$('surface'));label.setAttribute('stroke','white');label.setAttribute('stroke-width','4');label.setAttribute('stroke-linejoin','round');label.setAttribute('paint-order','stroke fill');label.textContent=left?'電子が供給される':'電子が引き出される';
+}
+
+}
+function drawWireElectrons(){
+if(t===0)return;
+const cycle=t%12;
+function follow(points,fraction){
+let lengths=points.slice(1).map((p,i)=>Math.hypot(p[0]-points[i][0],p[1]-points[i][1]));
+let distance=lengths.reduce((a,b)=>a+b,0)*Math.max(0,Math.min(fraction,1));
+for(let i=0;i<lengths.length;i++){if(distance<=lengths[i]){const k=distance/lengths[i];return {x:points[i][0]+(points[i+1][0]-points[i][0])*k,y:points[i][1]+(points[i+1][1]-points[i][1])*k}}distance-=lengths[i]}
+return {x:points.at(-1)[0],y:points.at(-1)[1]};
+}
+function electron(p){el('circle',{cx:p.x,cy:p.y,r:5,fill:'#79d2e4',stroke:'#153c50','stroke-width':.6},activeSurface||$('surface'));let z=el('text',{x:p.x,y:p.y+2.5,'text-anchor':'middle','font-size':7,fill:'#153c50'},activeSurface||$('surface'));z.textContent='e⁻'}
+// Two electrons follow the same wire with uniform spacing, then wait together at the surface.
+if(cycle<6){for(let i=0;i<2;i++){
+const y=type==='na'?255+batchIndex*80+i*32:(type==='cu'?285+i*20:279+i*32)+batchOffset;
+const waitingY=type==='na'?255+batchIndex*80:255+batchOffset;
+const wire=[[270,80],[190,80],[190,waitingY]],length=waitingY;
+const distance=cycle*65-i*40;
+if(distance<0)continue;
+let p;
+if(cycle<5.1){p=follow(wire,Math.min(distance/length,1));if(distance>=length)p.y+=i*10;}
+else{
+const u=Math.max(0,Math.min((cycle-5.1)/.9,1)),e=u*u*(3-2*u);
+const waiting={x:190,y:waitingY+i*10};
+p={x:waiting.x+(215-waiting.x)*e,y:waiting.y+(y-waiting.y)*e};
+}
+electron(p);
+}}
+// Electrons leave the ions first, enter the anode, and continue to the power supply.
+if(cycle>=4){const count=type==='na'?4:2;
+for(let i=0;i<count;i++){
+const y=(count===4?250+i*34:279+i*32)+batchOffset;
+const path=[[435,y],[447,y],[460,y],[460,80],[380,80]];
+const total=25+(y-80)+80;
+// Individual transfers are staggered; electrons then drift at the same wire speed.
+const firstY=(count===4?250:279)+batchOffset;
+const emittedAt=4+i*(40/65)-(y-firstY)/65,age=cycle-emittedAt;
+if(age<0)continue;
+const fraction=age*65/total;
+if(fraction<=1)electron(follow(path,fraction));
+}}
+}
+function drawSide(left){
+$('liquid').setAttribute('fill',type==='cu'?'#cdeafa':'#edf8fb');
+const stage=Math.floor(t/2)%6, f=(t%2)/2;
+const edge=left?203:447, contact=left?215:435, column=type==='na'?batchIndex:Math.floor(batchIndex/3),start=left?280+column*45:370+column*45;
+const cycle=t%12,travel=Math.min(cycle/4,1),smooth=travel*travel*(3-2*travel),ease=f*f*(3-2*f);
+const x=stage<2?start+(contact-start)*smooth:stage===5&&!(left&&type==='cu')?contact+(left?35:-35)*ease:contact;
+const g=activeSurface||$('surface');
+function particle(label,px,py,color){el('circle',{cx:px,cy:py,r:12,fill:color||'#d6eaf3',stroke:'#7f9aac'},g);let z=el('text',{x:px,y:py+5,'text-anchor':'middle','font-size':13,fill:'#203044'},g);z.textContent=label;}
+let before,atoms,product,n,lines;
+if(left&&type==='cu'){before=['Cu²⁺'];atoms=['Cu'];product='Cu';n=2;lines=['電源から電子を受け取る陰極へ、陽イオンのCu²⁺が電場によって移動する','Cu²⁺が陰極表面に到達。ここで電極の電子を受け取れる','電極から電子を2個もらう：Cu²⁺ + 2e⁻ → Cu','電荷のない銅原子になる：Cu²⁺ → Cu','銅原子が陰極の表面に付着する','銅が電極の表面に積もる'];}
+else if(!left&&type!=='na'){before=['Cl⁻','Cl⁻'];atoms=['Cl','Cl'];product='Cl₂';n=2;lines=['電源へ電子が引き出される陽極へ、陰イオンのCl⁻が電場によって移動する','Cl⁻が陽極表面に到達。ここで電子を電極へ渡せる','それぞれ電子を1個放す：Cl⁻ → Cl + e⁻','電荷のない塩素原子が2個になる','2個の塩素原子が結びつく：Cl + Cl → Cl₂','塩素分子が電極の表面から離れ、気体になる'];}
+else if(left&&type==='hcl'){before=['H⁺','H⁺'];atoms=['H','H'];product='H₂';n=2;lines=['水素イオンが陰極に近づく','水素イオンが陰極の表面に到達する','それぞれ電子を1個もらう','電荷のない水素原子が2個になる','2個が結びつき、水素分子になる','水素分子が電極の表面から離れる'];}
+else if(left){before=['H₂O','H₂O'];atoms=['H₂','OH⁻','OH⁻'];product='H₂';n=2;lines=['水は溶液全体にある。陰極のそばに初めからある水に注目する','水を引き寄せるのではなく、陰極に接している水が反応する','水が電子を合計2個もらう','水素と水酸化物イオンが生じる','水素分子が生じる。Na⁺は反応しない','水素が発生し、OH⁻は水溶液中に残る'];}
+else{before=['OH⁻','OH⁻','OH⁻','OH⁻'];atoms=['O₂','H₂O','H₂O'];product='O₂';n=4;lines=['水酸化物イオンが陽極に近づく','水酸化物イオンが陽極の表面に到達する','電子を合計4個、陽極に渡す','酸素と水が生じる','酸素分子が生じる','酸素が電極の表面から離れる'];}
+const ys=before.length===4?[250,284,318,352]:before.length===2?[279,311]:[295];
+ys.forEach((y,i)=>ys[i]=y+batchOffset);
+if(left&&type==='na'){ys[0]=255+batchIndex*80;ys[1]=287+batchIndex*80;}
+if(stage<4){let labels=stage<3?before:atoms;labels.forEach((v,i)=>{
+// Change each chloride ion as its own electron leaves, rather than waiting for the next stage.
+if(!left&&type!=='na'&&stage===2){
+const firstY=279+batchOffset;
+const emittedAt=4+i*(40/65)-(ys[i]-firstY)/65;
+if(cycle>=emittedAt)v='Cl';
+}
+let y=ys[i]||350,px=x;
+if(left&&type==='na'&&stage<3){px=contact;}
+else if(stage<2){const initial=initialParticle(left,i);px=initial.x+(contact-initial.x)*smooth;y=initial.y+((ys[i]||350)-initial.y)*smooth;}
+
+if(stage===3&&type!=='na'&&labels.length===2)y+=(i===0?4:-4)*ease;
+particle(v,px,y,v==='Cu'?'#cd8a61':undefined);
+});}
+else if(product==='Cu'){particle('Cu',contact,295+batchOffset,'#cd8a61');}
+else{const y=(stage===5?295-ease*60:295)+batchOffset;const symbol=product.replace('₂','');const separation=12;particle(symbol,x,y-separation,'#e3ecc9');particle(symbol,x,y+separation,'#e3ecc9');let z=el('text',{x:x+(left?28:-28),y:y+5,'text-anchor':left?'start':'end','font-size':14,fill:'#203044'},g);z.textContent=product;}
+// Keep the preceding molecule in view while the next ions enter the scene.
+if(t>=12&&cycle<2&&product!=='Cu'){
+const age=cycle/2,px=contact+(left?35:-35),py=235-age*70+batchOffset;
+let ghost=el('g',{opacity:1-age},g);
+
+for(const offset of [-12,12]){el('circle',{cx:px,cy:py+offset,r:12,fill:'#e3ecc9',stroke:'#7f9aac'},ghost);let z=el('text',{x:px,y:py+offset+5,'text-anchor':'middle','font-size':13,fill:'#203044'},ghost);z.textContent=product.replace('₂','');}
+}
+if(!describeBatch)return;const line=document.createElement('div');line.textContent=(left?'陰極：':'陽極：')+lines[stage===1?0:stage];$('phase').append(line);$('phase').setAttribute('data-stage',stage+1);
+}
+function play(){running=!running;$('play').textContent=running?'Ⅱ 一時停止':'▶ 電源を入れる';$('status').textContent=running?'電源ON · 電子は電源から陰極へ、陽極から電源へ':'電源OFF / 一時停止';last=performance.now();draw()}function reset(){running=false;t=0;progress=0;$('play').textContent='▶ 電源を入れる';$('status').textContent='電源OFF';setup()}document.querySelectorAll('[data-type]').forEach(b=>b.onclick=()=>{type=b.dataset.type;document.querySelectorAll('[data-type]').forEach(x=>x.setAttribute('aria-selected',x===b));reset()});$('play').onclick=()=>{if((type==='na'&&t>=1301)||(type!=='na'&&t>=1+(batchCount()-1)*4+14))reset();play()};$('reset').onclick=reset;$('step').onclick=()=>{if(running)play();t=Math.floor(t/2)*2+2;progress=Math.min(progress+.025,1);draw();$('status').textContent='1ステップ進めました · 電極反応を観察しましょう'};$('showions').onchange=draw;function frame(now){if(running){let dt=Math.min((now-last)/1000,.05)*Number($('speed').value);t+=dt;progress=Math.min(progress+dt*.012,1);draw()}last=now;requestAnimationFrame(frame)}setup();requestAnimationFrame(frame);
+</script></html>
